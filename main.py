@@ -61,7 +61,7 @@ def main():
     db_sess.commit()
 
     # Работа
-    job = Jobs()
+    job = Job()
     job.team_leader = 1
     job.job = "deployment of residential modules 1 and 2"
     job.work_size = 15
