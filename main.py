@@ -1,6 +1,7 @@
 from flask import Flask
 from data import db_session
 from data.users import User
+from data.jobs import Job
 
 
 app = Flask(__name__)
@@ -57,6 +58,17 @@ def main():
     user.email = "сolonist3@mars.org"
     db_sess = db_session.create_session()
     db_sess.add(user)
+    db_sess.commit()
+
+    # Работа
+    job = Job()
+    job.team_leader = 1
+    job.job = "deployment of residential modules 1 and 2"
+    job.work_size = 15
+    job.collaborators = "2, 3"
+    job.is_finished = False
+    db_sess = db_session.create_session()
+    db_sess.add(job)
     db_sess.commit()
 
 

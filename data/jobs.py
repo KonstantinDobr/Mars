@@ -5,7 +5,7 @@ from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
 
 
-class Jobs(SqlAlchemyBase):
+class Job(SqlAlchemyBase):
     __tablename__ = 'jobs'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -19,6 +19,6 @@ class Jobs(SqlAlchemyBase):
                                  default=datetime.datetime.now)
     is_finished = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
 
-    team_leader_id = sqlalchemy.Column(sqlalchemy.Integer,
+    team_leader = sqlalchemy.Column(sqlalchemy.Integer,
                                        sqlalchemy.ForeignKey("users.id"))
     user = orm.relationship('User')
