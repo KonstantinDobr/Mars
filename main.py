@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from data import db_session
 from data.users import User
 from data.jobs import Job
@@ -10,7 +10,6 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 def main():
     db_session.global_init("db/mars_explorer.db")
-    # app.run()
     # Капитан
     user = User()
     user.surname = "Scott"
@@ -26,6 +25,7 @@ def main():
     # Колонист 1
     user = User()
     user.surname = "Colonist1"
+    user.name = "First"
 
     user.age = 20
     user.position = "navigator1"
@@ -60,9 +60,20 @@ def main():
     db_sess.add(user)
     db_sess.commit()
 
-    # Работа
+    # Работа 1
     job = Job()
     job.team_leader = 1
+    job.job = "Exploration of mineral resources"
+    job.work_size = 16
+    job.collaborators = "1, 4, 8"
+    job.is_finished = True
+    db_sess = db_session.create_session()
+    db_sess.add(job)
+    db_sess.commit()
+
+    # Работа 2
+    job = Job()
+    job.team_leader = 2
     job.job = "deployment of residential modules 1 and 2"
     job.work_size = 15
     job.collaborators = "2, 3"
@@ -70,6 +81,14 @@ def main():
     db_sess = db_session.create_session()
     db_sess.add(job)
     db_sess.commit()
+
+    app.run()
+
+@app.route("/")
+def index():
+    db_sess = db_session.create_session()
+    jobs = db_sess.query(Job).all()
+    return render_template("index.html", jobs=jobs)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block content %} {% for item in jobs %}
+<div class="col-md6 border rounded">
+  <h2>Action #{{ item.id }}</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title of activity</th>
+        <th scope="col">Team leader</th>
+        <th scope="col">Duration</th>
+        <th scope="col">List of collabarators</th>
+        <th scope="col">is finished</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ item.job }}</td>
+        <td>{{ item.user.name }} {{item.user.surname}}</td>
+        <td>{{ item.work_size }}</td>
+        <td>{{ item.collaborators }}</td>
+        <td>{{ item.is_finished }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endfor %} {% endblock %}
