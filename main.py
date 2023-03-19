@@ -16,7 +16,7 @@ login_manager.init_app(app)
 
 @app.route('/jobs',  methods=['GET', 'POST'])
 @login_required
-def add_news():
+def add_jobs():
     form = JobForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -27,7 +27,8 @@ def add_news():
         job.team_leader = form.team_leader.data
         job.is_finished = form.is_finished.data
         db_sess = db_session.create_session()
-        db_sess.add(job)
+        current_user.jobs.append(job)
+        db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/')
     return render_template('jobs.html', title='Добавление информации о работе',
@@ -37,7 +38,7 @@ def add_news():
 @login_required
 def jobs_delete(id):
     db_sess = db_session.create_session()
-    jobs = db_sess.query(Job).filter(Job.id == id
+    jobs = db_sess.query(Job).filter(Job.id == id, (Job.user == current_user) | (current_user.id == 1)
                                       ).first()
     if jobs:
         db_sess.delete(jobs)
@@ -53,7 +54,7 @@ def edit_jobs(id):
     form = JobForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        job = db_sess.query(Job).filter(Job.id == id
+        job = db_sess.query(Job).filter(Job.id == id, (Job.user == current_user) | (current_user.id == 1)
                                           ).first()
         if job:
             form.title.data = job.job
@@ -65,7 +66,7 @@ def edit_jobs(id):
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        job = db_sess.query(Job).filter(Job.id == id
+        job = db_sess.query(Job).filter(Job.id == id, (Job.user == current_user) | (current_user.id == 1)
                                           ).first()
         if job:
             job.job = form.title.data
