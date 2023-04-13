@@ -38,7 +38,7 @@ def get_one_job(job_id):
 
 
 @blueprint.route('/api/jobs', methods=['POST'])
-def create_jobs():
+def create_job():
     if not request.json:
         return jsonify({'error': 'Empty request'})
     elif not all(key in request.json for key in
@@ -64,7 +64,7 @@ def create_jobs():
 
 
 @blueprint.route('/api/jobs/<int:job_id>', methods=['DELETE'])
-def delete_jobs(job_id):
+def delete_job(job_id):
     db_sess = db_session.create_session()
     job = db_sess.query(job).get(job_id)
     if not job:
